@@ -1,0 +1,9 @@
+---
+
+- name: Install Required MPI Packages
+  ansible.builtin.package:
+   name:
+   - nfs-utils
+   - openssh
+   - openmpi
+   state: latest

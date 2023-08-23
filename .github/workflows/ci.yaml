@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - "*"
+    tags:
+      - "*"
+
+jobs:
+  ci:
+    uses: fire833/cicd-templates/.github/workflows/ansible_ci_v1.yaml@main
