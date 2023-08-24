@@ -2,3 +2,6 @@
 - block:
   - name: Install software
     ansible.builtin.import_tasks: software/software.yaml
+
+  - name: Install configurations/start software
+    ansible.builtin.import_tasks: config/config.yaml

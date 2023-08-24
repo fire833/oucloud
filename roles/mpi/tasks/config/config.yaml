@@ -1,0 +1,15 @@
+---
+
+- name: Install NFS Configuration
+  ansible.builtin.template:
+    src: nfs.conf.j2
+    dest: /etc/nfs.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Start/Restart NFS Server
+  ansible.builtin.systemd_service:
+    enabled: true
+    name: nfs-server
+    state: restarted
