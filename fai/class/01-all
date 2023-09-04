@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Proxmox class
+
+# For now, all configured hosts with FAI will be provisioned 
+echo "PROXMOX"
+exit 0
