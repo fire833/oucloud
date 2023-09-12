@@ -1,0 +1,3 @@
+
+pkill dnsmasq
+dnsmasq
