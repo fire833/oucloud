@@ -1,2 +1,8 @@
 ---
-- block: []
+- block:
+
+  - name: Install software repositories
+    ansible.builtin.import_tasks: software/repos.yaml
+
+  - name: Install software
+    ansible.builtin.import_tasks: software/packages.yaml
