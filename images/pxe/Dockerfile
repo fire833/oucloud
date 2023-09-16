@@ -2,7 +2,7 @@
 FROM docker.io/ubuntu:jammy
 
 RUN apt-get update && \ 
-    apt-get install -y wget dnsmasq net-tools iproute2 && \
+    apt-get install -y wget dnsmasq net-tools iproute2 neovim && \
     mkdir -p /srv/tftp && cd /srv/tftp && \
     wget https://ftp.debian.org/debian/dists/bookworm/main/installer-amd64/current/images/netboot/netboot.tar.gz && \
     tar -xzvf netboot.tar.gz && \
