@@ -1,0 +1,15 @@
+[connection]
+id=staticeth
+type=ethernet
+uuid=f88b2950-f1f1-4c13-aa54-b883d21440e4
+interface-name=enp0s31f6
+
+[ethernet]
+
+[ipv4]
+method=manual
+address=10.0.2.4/24
+gateway=10.0.2.4
+dns=10.0.2.4
+
+[proxy]
