@@ -1,8 +1,1 @@
 ---
-- name: Install proxmox
-  ansible.builtin.apt:
-    name:
-    - proxmox-ve
-    - open-iscsi
-    - ifupdown2
-    state: latest

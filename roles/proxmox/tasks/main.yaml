@@ -1,5 +1,7 @@
 ---
 - block:
+  - name: Install Proxmox
+    ansible.builtin.import_tasks: software/proxmox_software.yaml
 
   - name: Install software repositories
     ansible.builtin.import_tasks: software/repos.yaml
