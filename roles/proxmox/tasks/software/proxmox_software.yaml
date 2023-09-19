@@ -20,6 +20,38 @@
     autoremove: true
     upgrade: true
 
+- name: Create /boot/pve for proxmox kernels
+  ansible.builtin.file:
+    path: /boot/pve
+    state: directory
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Create /mnt/pve for proxmox kernels
+  ansible.builtin.file:
+    path: /mnt/pve
+    state: directory
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Create bindmount from /mnt/pve to /boot/pve
+  ansible.posix.mount:
+    src: /mnt/pve
+    path: /boot/pve
+    state: mounted
+    opts: bind
+    fstype: none
+    boot: true
+    backup: true
+  register: add_mount
+
+# - name: Update fstab
+#   ansible.builtin.shell: |
+#     genfstab
+#   when: add_mount.changed
+
 # Note: learned this the hard way: Your EFI partition cannot be a VFAT partition 
 # since this package tries to symlink kernels in /boot/pve, and vfat does not support
 # symlinks :(
