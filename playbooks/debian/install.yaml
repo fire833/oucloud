@@ -1,0 +1,94 @@
+# Copyright (C) 2023 Kendall Tauser
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# PLaybook to install a base debian system from an arch live installer image. 
+# This allows you to have a live image and truly automate the _entire_ installation.
+# You don't have to deal with any of that GUI install crap debian offers. 
+---
+
+- name: Configure disks
+  ansible.builtin.import_playbook: disks.yaml
+
+- name: Install debian
+  hosts: all
+  vars_prompt:
+  - name: distribution
+    private: false
+    unsafe: false
+    prompt: Provide the debian distribution channel you wish to install on this server
+    default: bookworm
+  - name: hostname
+    private: false
+    unsafe: false
+    prompt: Provide the hostname for this server
+  - name: password
+    private: true
+    unsafe: false
+    prompt: Provide the root password for this box
+  tasks:
+  - name: Update time
+    ansible.builtin.shell: timedatectl
+
+  - name: Install debootstrap
+    community.general.pacman:
+      name:
+      - debootstrap
+      update_cache: true
+      state: latest
+
+  - name: Run debootstrap
+    ansible.builtin.shell: |
+      debootstrap --include=linux-image-amd64,grub-efi-amd64,systemd,systemd-sysv,libpam-systemd,libsystemd0,sudo,python3,gpg,neovim,git,nano,vim,ssh,curl,wget,pciutils,dnsutils,usbutils,net-tools,dbus,lvm2 {{ distribution }} /mnt https://deb.debian.org/debian/
+
+  - name: Install packages directly in chroot
+    ansible.builtin.shell: |
+      arch-chroot /mnt apt-get install -y network-manager
+
+  - name: Run genfstab
+    ansible.builtin.shell: |
+      genfstab -U /mnt >> /mnt/etc/fstab
+
+  - name: General settings
+    ansible.builtin.shell: |
+      arch-chroot /mnt bash -c "echo 'This is a restricted box, get out!' > /etc/motd"
+      arch-chroot /mnt bash -c "echo '{{ hostname }}' > /etc/hostname"
+
+  - name: Run grub-install
+    ansible.builtin.shell: |
+      arch-chroot /mnt /usr/sbin/grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+
+  - name: Run grub updater script
+    ansible.builtin.shell: |
+      arch-chroot /mnt bash -c "export PATH=$PATH:/usr/sbin && update-grub"
+
+  - name: Enable NetworkManager
+    ansible.builtin.shell: |
+      arch-chroot /mnt systemctl enable NetworkManager
+
+  - name: Temporarily allow root login over SSH for phase 2 bootstrap
+    ansible.builtin.lineinfile:
+      path: /mnt/etc/ssh/sshd_config
+      regexp: "^#?PermitRootLogin.*$"
+      line: PermitRootLogin yes
+      state: present
+
+  - name: Enable SSHD
+    ansible.builtin.shell: |
+      arch-chroot /mnt systemctl enable ssh
+
+  - name: Set password
+    ansible.builtin.shell: |
+      arch-chroot /mnt bash -c "echo -e '{{ password }}\n{{ password }}' | passwd"

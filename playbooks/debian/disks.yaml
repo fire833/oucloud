@@ -1,0 +1,129 @@
+# Copyright (C) 2023 Kendall Tauser
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+
+- name: Setup disks
+  hosts: all
+  vars:
+    ceph_root_lv: true
+    ceph_root_lv_percent: "85"
+  # become: true
+  vars_prompt:
+  - name: boot_disk
+    private: false
+    unsafe: false
+    prompt: Provide the block device to be used as the primary boot/rootfs drive
+  - name: boot_disk_efi_part
+    private: false
+    unsafe: false
+    prompt: Provide the device name for the partition for EFI
+  - name: boot_disk_lvm_part
+    private: false
+    unsafe: false
+    prompt: Provide the device name for the partition for LVM
+  - name: rootfs_size
+    private: false
+    unsafe: false
+    default: 100G
+    prompt: Provide the desired size of the root LVM logical volume
+  tasks:
+  - name: Install lvm2
+    community.general.pacman:
+      name:
+      - lvm2
+      update_cache: true
+      state: latest
+
+  - name: Read device information (always use unit when probing)
+    community.general.parted: device={{ boot_disk }} unit=MiB
+    register: dev_info
+
+  - name: Remove all partitions from disk
+    community.general.parted:
+      device: "{{ boot_disk }}"
+      number: '{{ item.num }}'
+      state: absent
+    loop: '{{ dev_info.partitions }}'
+
+  - name: EFI Partition
+    community.general.parted:
+      device: "{{ boot_disk }}"
+      name: boot
+      number: 1
+      label: gpt
+      state: present
+      align: optimal
+      part_end: 3GB
+      unit: GB
+  
+  - name: Format Boot Partition
+    community.general.filesystem:
+      device: "{{ boot_disk_efi_part }}"
+      fstype: vfat
+
+  - name: LVM General Partition
+    community.general.parted:
+      device: "{{ boot_disk }}"
+      name: lvm
+      number: 2
+      label: gpt
+      flags: [ lvm ]
+      state: present
+      part_start: 3GB
+      unit: GB
+
+  - name: Create Primary Volume Group
+    community.general.lvg:
+      vg: boot-vg
+      pvs:
+      - "{{ boot_disk_lvm_part }}"
+      pesize: 16
+      state: present
+  
+  - name: Create Root Logical Volume
+    community.general.lvol:
+      vg: boot-vg
+      lv: root-lv
+      size: "{{ rootfs_size }}"
+      force: yes
+      state: present
+
+  - name: Format Root Partition
+    community.general.filesystem:
+      device: /dev/boot-vg/root-lv
+      fstype: ext4
+      state: present
+
+  - name: Mount root partition
+    ansible.posix.mount:
+      path: /mnt
+      src: /dev/boot-vg/root-lv
+      fstype: ext4
+      state: mounted
+
+  - name: Create boot directory
+    ansible.builtin.file:
+      path: /mnt/boot
+      state: directory
+      mode: '0644'
+
+  - name: Mount EFI Partition
+    ansible.posix.mount:
+      path: /mnt/boot
+      src: "{{ boot_disk_efi_part }}"
+      fstype: vfat
+      state: mounted
