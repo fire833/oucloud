@@ -1,1 +1,12 @@
 ---
+
+- block:
+  - name: Install dnsmasq
+    ansible.builtin.import_tasks: software/dnsmasq.yaml
+  - name: Install haproxy
+    ansible.builtin.import_tasks: software/haproxy.yaml
+  - name: Install zerotier
+    ansible.builtin.import_tasks: software/zerotier.yaml
+
+  - name: Enable Routing
+    ansible.builtin.import_tasks: routing.yaml
