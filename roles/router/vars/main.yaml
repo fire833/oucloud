@@ -1,0 +1,5 @@
+---
+
+zerotier_network: ""
+
+tftp_dir: /srv/tftp

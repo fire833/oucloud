@@ -1,0 +1,31 @@
+---
+
+- name: Install Dnsmasq config
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    mode: '0644'
+    owner: root
+    group: root
+    backup: true
+  register: dnsmasq_config
+
+- name: Install TFTP Directory
+  ansible.builtin.file:
+    path: "{{ tftp_dir }}"
+    state: directory
+    mode: '0644'
+
+- name: Install Dnsmasq
+  ansible.builtin.apt:
+    name:
+    - dnsmasq
+    state: latest
+  register: dnsmasq_install
+
+- name: Enable Dnsmasq
+  ansible.builtin.systemd_service:
+    name: dnsmasq.service
+    enabled: true
+    state: restarted
+    daemon_reload: true

@@ -1,0 +1,25 @@
+---
+
+- name: Install Haproxy config
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: '0644'
+    owner: root
+    group: root
+    backup: true
+  register: haproxy_config
+
+- name: Install Haproxy
+  ansible.builtin.apt:
+    name:
+    - haproxy
+    state: latest
+  register: haproxy_install
+
+- name: Enable HAProxy
+  ansible.builtin.systemd_service:
+    name: haproxy.service
+    enabled: true
+    state: restarted
+    daemon_reload: true
