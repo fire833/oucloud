@@ -1,6 +1,6 @@
 ---
 
-zerotier_network: ""
+zerotier_network: 48d6023c467685f7
 
 tftp_dir: /srv/tftp
 haproxy_stats_sock: /run/haproxy.sock
