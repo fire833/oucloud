@@ -6,6 +6,36 @@
     state: directory
     mode: '0755'
 
+- name: Install HAproxy certs Directory
+  ansible.builtin.file:
+    path: /etc/haproxy/certs
+    state: directory
+    mode: '0755'
+
+- name: Generate private key (proxmox.cloud.ou.edu)
+  community.crypto.openssl_privatekey:
+    path: /etc/haproxy/certs/proxmox-cloud.key
+    type: ECC
+    curve: secp256r1
+    state: present
+
+- name: Generate CSR (proxmox.cloud.ou.edu)
+  community.crypto.openssl_csr:
+    path: /etc/haproxy/certs/proxmox-cloud.csr
+    privatekey_path: /etc/haproxy/certs/proxmox-cloud.key
+    country_name: US
+    organization_name: OU
+    common_name: proxmox.cloud.ou.edu
+    state: present
+
+- name: Generate self-signed cert (proxmox.cloud.ou.edu)
+  community.crypto.x509_certificate:
+    path: /etc/haproxy/certs/proxmox-cloud
+    privatekey_path: /etc/haproxy/certs/proxmox-cloud.key
+    csr_path: /etc/haproxy/certs/proxmox-cloud.csr
+    provider: selfsigned
+    state: present
+
 - name: Install Haproxy config
   ansible.builtin.template:
     src: haproxy.cfg.j2

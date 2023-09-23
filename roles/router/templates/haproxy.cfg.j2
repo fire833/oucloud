@@ -69,7 +69,7 @@ frontend http_frontend
   redirect scheme https code 301 if !{ ssl_fc }
 
 frontend https_frontend
-  bind :443 ssl
+  bind :443 ssl crt /etc/haproxy/certs/proxmox-cloud ssl-min-ver TLSv1.2
   use_backend proxmox_backends if { hdr(host) -i proxmox.cloud.ou.edu }
 {% for host in proxmox_servers %}
   use_backend proxmox_{{ host.hostname }} if { hdr(host) -i {{ host.hostname }}.proxmox.cloud.ou.edu }
