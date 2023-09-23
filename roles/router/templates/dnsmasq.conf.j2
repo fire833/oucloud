@@ -5,7 +5,9 @@ dhcp-boot=pxelinux.0
 dhcp-option=3,10.0.2.1
 dhcp-option=6,10.0.2.1
 dhcp-authoritative
-# bind-dynamic
+bind-interfaces
+interface={{ router_lan_iface }}
+except-interface={{ router_wan_iface }}
 # interface=
 log-dhcp
 # log-facility=

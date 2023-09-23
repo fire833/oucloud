@@ -37,7 +37,7 @@
   ansible.builtin.file:
     path: /boot/pve
     state: directory
-    mode: '0644'
+    mode: '0755'
     owner: root
     group: root
 
@@ -45,7 +45,7 @@
   ansible.builtin.file:
     path: /mnt/pve
     state: directory
-    mode: '0644'
+    mode: '0755'
     owner: root
     group: root
 

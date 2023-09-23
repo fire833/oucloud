@@ -1,8 +1,33 @@
 ---
 # Set ip forwarding on in /proc and in the sysctl file and reload if necessary
-- ansible.posix.sysctl:
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: '1'
     sysctl_set: true
     state: present
     reload: true
+
+- name: Add /etc/network/interfaces.d
+  ansible.builtin.file:
+    path: /etc/network/interfaces.d
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Set static LAN IP
+  ansible.builtin.template:
+    src: interfaces/lan.j2
+    dest: /etc/network/interfaces.d/lan
+    mode: '0644'
+    owner: root
+    group: root    
+
+- name: Set dynamic WAN IP
+  ansible.builtin.template:
+    src: interfaces/wan.j2
+    dest: /etc/network/interfaces.d/wan
+    mode: '0644'
+    owner: root
+    group: root   
