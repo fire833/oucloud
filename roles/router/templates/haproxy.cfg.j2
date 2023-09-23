@@ -5,7 +5,7 @@ global
   log       /dev/log  local0
   log       /dev/log  local1 notice
   chroot    /var/lib/haproxy
-  # stats     socket {{ stats_sock }} mode 660 level admin expose-fd listeners
+  # stats     socket {{ haproxy_stats_sock }} mode 660 level admin expose-fd listeners
   stats     timeout 30s
   maxconn   2048
   user      haproxy
@@ -72,15 +72,15 @@ frontend https_frontend
   bind :443 ssl
   use_backend proxmox_backends if { hdr(host) -i proxmox.cloud.ou.edu }
 {% for host in proxmox_servers %}
-  use_backend proxmox_{{ host.hostname }} if { hdr(host) -i {{}}.proxmox.cloud.ou.edu }
-{% %}
+  use_backend proxmox_{{ host.hostname }} if { hdr(host) -i {{ host.hostname }}.proxmox.cloud.ou.edu }
+{% endfor %}
 
 backend proxmox_backends
 {% for host in proxmox_servers %}
   server {{ host.hostname }} {{ host.ip }}
-{% endif %}
+{% endfor %}
 
 {% for host in proxmox_servers %}
 backend proxmox_{{ host.hostname }}
   server {{ host.hostname }} {{ host.ip }}
-{% endif %}
+{% endfor %}

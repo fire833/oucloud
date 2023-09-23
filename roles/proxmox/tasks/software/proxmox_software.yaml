@@ -1,11 +1,24 @@
 # Installing software for proxmox on Debian 12:
 # https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_12_Bookworm
 ---
+- name: Upgrade current distribution
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+
+# Apparently this is now deprecated and no longer works, wonderful.
+# - name: Add Proxmox Repository Key
+#   ansible.builtin.apt_key:
+#     validate_certs: true
+#     url: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
+#     state: present
+
 - name: Add Proxmox Repository Key
-  ansible.builtin.apt_key:
-    validate_certs: true
+  ansible.builtin.get_url:
     url: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
-    state: present
+    dest: /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+    mode: '0644'
+    force: true
 
 - name: Add Proxmox apt repository
   ansible.builtin.apt_repository:

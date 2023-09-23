@@ -3,3 +3,6 @@
 zerotier_network: ""
 
 tftp_dir: /srv/tftp
+haproxy_stats_sock: /run/haproxy.sock
+
+proxmox_servers: []

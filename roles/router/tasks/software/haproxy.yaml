@@ -1,5 +1,11 @@
 ---
 
+- name: Install HAproxy config Directory
+  ansible.builtin.file:
+    path: /etc/haproxy
+    state: directory
+    mode: '0755'
+
 - name: Install Haproxy config
   ansible.builtin.template:
     src: haproxy.cfg.j2
