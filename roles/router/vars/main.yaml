@@ -6,6 +6,7 @@ tftp_dir: /srv/tftp
 haproxy_stats_sock: /run/haproxy.sock
 
 router_lan_iface: eno1
+router_lan_remove_offload: true
 router_wan_iface: enp6s0f1
 
 proxmox_servers: []
