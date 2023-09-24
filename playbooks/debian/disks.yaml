@@ -18,23 +18,24 @@
 
 - name: Setup disks
   hosts: all
-  vars:
-    ceph_root_lv: true
-    ceph_root_lv_percent: "85"
+  # vars: 
   # become: true
   vars_prompt:
   - name: boot_disk
     private: false
     unsafe: false
     prompt: Provide the block device to be used as the primary boot/rootfs drive
+    default: /dev/nvme0n1
   - name: boot_disk_efi_part
     private: false
     unsafe: false
     prompt: Provide the device name for the partition for EFI
+    default: /dev/nvme0n1p1
   - name: boot_disk_lvm_part
     private: false
     unsafe: false
     prompt: Provide the device name for the partition for LVM
+    default: /dev/nvme0n1p2
   - name: rootfs_size
     private: false
     unsafe: false
@@ -47,6 +48,9 @@
       - lvm2
       update_cache: true
       state: latest
+
+  - name: Run wipefs on root device
+    ansible.builtin.command: wipefs -a {{ boot_disk }}
 
   - name: Read device information (always use unit when probing)
     community.general.parted: device={{ boot_disk }} unit=MiB
