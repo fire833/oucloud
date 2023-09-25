@@ -16,6 +16,13 @@
     state: directory
     mode: '0755'
 
+- name: Install Arch iPXE EFI image
+  ansible.builtin.get_url:
+    url: https://archlinux.org/static/netboot/ipxe-arch.16e24bec1a7c.efi
+    dest: /srv/tftp/{{ arch_pxe_efi }}
+    mode: '0644'
+    force: true
+
 - name: Install Dnsmasq
   ansible.builtin.apt:
     name:

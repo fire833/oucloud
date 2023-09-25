@@ -3,6 +3,7 @@
 zerotier_network: 48d6023c467685f7
 
 tftp_dir: /srv/tftp
+arch_pxe_efi: archiso.efi
 haproxy_stats_sock: /run/haproxy.sock
 
 router_lan_iface: eno1

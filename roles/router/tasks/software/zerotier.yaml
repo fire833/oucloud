@@ -15,7 +15,8 @@
   ansible.builtin.systemd_service:
     name: zerotier-one.service
     enabled: true
-    state: restarted
+    # state: restarted
+    state: started
     daemon_reload: true
 
 - name: Join Network
