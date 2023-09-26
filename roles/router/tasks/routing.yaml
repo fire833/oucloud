@@ -22,7 +22,7 @@
     dest: /etc/network/interfaces.d/lan
     mode: '0644'
     owner: root
-    group: root    
+    group: root
 
 - name: Set dynamic WAN IP
   ansible.builtin.template:
@@ -30,4 +30,19 @@
     dest: /etc/network/interfaces.d/wan
     mode: '0644'
     owner: root
-    group: root   
+    group: root
+
+- name: Install iptables-persistent
+  ansible.builtin.apt:
+    name:
+    - iptables-persistent
+    state: latest
+
+- name: Install iptables rules v4
+  ansible.builtin.template:
+    src: iptables.v4.j2
+    dest: /etc/iptables/rules.v4
+    mode: '0644'
+    owner: root
+    group: root
+  register: rules_v4

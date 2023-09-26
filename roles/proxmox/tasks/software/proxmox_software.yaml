@@ -91,6 +91,13 @@
     - postfix
     state: latest
 
+- name: Remove Proxmox Enterprise Repository
+  ansible.builtin.apt_repository:
+    validate_certs: false
+    repo: deb [arch=amd64] https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise
+    filename: pve-enterprise
+    state: absent
+
 - name: Remove vanilla debian kernel
   ansible.builtin.apt:
     name:
