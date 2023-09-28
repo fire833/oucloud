@@ -1,3 +1,56 @@
 
 # Set custom prompt for root user only
 PS1='(\[\e[31;1;3m\]root \[\e[0m\]@ \[\e[32m\]\H\[\e[0m\])-(\[\e[38;5;25m\]$(git branch 2>/dev/null | grep '"'"'*'"'"')\[\e[0m\])-(\[\e[38;5;27m\]\w\[\e[0m\]) --> '
+
+alias g="git"
+alias gc="git commit"
+alias gca="git commit -a"
+alias gcam="git commit -a -m"
+alias ga="git add -A"
+alias gs="git status"
+alias gl="git log"
+alias glo="git log --oneline"
+alias grs="git reset --soft"
+alias grh="git reset --hard"
+alias grbi="git rebase -i"
+alias grba="git rebase --abort"
+alias grbs="git rebase --skip"
+alias grbc="git rebase --continue"
+alias gus="git restore --staged"
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias gb="git branch"
+alias gbv="git branch -v"
+
+# Systemctl aliases
+alias ss="systemctl status"
+if [ "$(id -u)" == "0" ]; then
+    alias sr="systemctl restart"
+    alias srl="systemctl reload"
+    alias sd="systemctl daemon-reload"
+    alias st="systemctl start"
+    alias sp="systemctl stop"
+else
+    alias sr="sudo systemctl restart"
+    alias srl="sudo systemctl reload"
+    alias sd="sudo systemctl daemon-reload"
+    alias st="sudo systemctl start"
+    alias sp="sudo systemctl stop"
+fi
+
+# cd aliases
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+alias ........="cd ../../../../../../.."
+
+# NetworkManagerCLI aliases
+alias nm="nmcli"
+alias nmc="nmcli c"
+alias nmcu="nmcli c up"
+alias nmcd="nmcli c down"
+alias nmcs="nmcli c show"
+alias nmds="nmcli d show"
