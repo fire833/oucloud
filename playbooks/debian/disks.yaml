@@ -26,6 +26,11 @@
     unsafe: false
     prompt: Provide the block device to be used as the primary boot/rootfs drive
     default: /dev/nvme0n1
+  - name: root_dev_shred
+    private: false
+    unsafe: false
+    prompt: Do you want to perform a hard wipe of the boot/rootfs drive? [Y|n]
+    default: y
   - name: boot_disk_efi_part
     private: false
     unsafe: false
@@ -51,6 +56,10 @@
 
   - name: Run wipefs on root device
     ansible.builtin.command: wipefs -a {{ boot_disk }}
+
+  - name: Shred the root device optionally
+    ansible.builtin.command: shred -v -n1 {{ boot_disk }}
+    when: root_dev_shred == "y" or root_dev_shred == "Y"
 
   - name: Read device information (always use unit when probing)
     community.general.parted: device={{ boot_disk }} unit=MiB
