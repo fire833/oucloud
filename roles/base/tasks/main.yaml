@@ -1,1 +1,5 @@
 ---
+
+- block:
+  - name: Add root user configs
+    ansible.builtin.import_tasks: users/root.yaml

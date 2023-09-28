@@ -1,6 +1,13 @@
 
 # Run all the roles
 ---
+- name: Base Role Provision
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+  - base
+
 - name: Proxmox Base Role Provision
   hosts: proxmox
   tags: proxmox

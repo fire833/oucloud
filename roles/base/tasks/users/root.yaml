@@ -1,0 +1,25 @@
+---
+
+- name: Install bashrc for root
+  ansible.builtin.template:
+    src: bashrc.j2
+    dest: /root/.bashrc
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Install bash_profile for root
+  ansible.builtin.template:
+    src: bash_profile.j2
+    dest: /root/.bash_profile
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Install profile for root
+  ansible.builtin.template:
+    src: profile.j2
+    dest: /root/.profile
+    mode: '0644'
+    owner: root
+    group: root
