@@ -92,3 +92,14 @@
   - name: Set password
     ansible.builtin.shell: |
       arch-chroot /mnt bash -c "echo -e '{{ password }}\n{{ password }}' | passwd"
+
+  - name: Reboot after install
+    ansible.builtin.reboot:
+      test_command: date
+      reboot_timeout: 3600
+
+  - name: Print interfaces
+    ansible.builtin.debug:
+      msg: "Host {{ hostname|default('unknown') }} has interface {{ item }} MAC {{ ansible_facts[item]['macaddress']|default('unknown') }} and IP {{ ansible_facts[item]['ipv4']['address']|default('unknown') }}"
+    with_items:
+    - "{{ ansible_interfaces }}"
