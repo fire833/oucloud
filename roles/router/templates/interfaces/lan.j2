@@ -1,3 +1,4 @@
+auto {{ router_lan_iface }}
 iface {{ router_lan_iface }} inet static
 {% if router_lan_remove_offload is defined and router_lan_remove_offload %}
     offload-gso off
