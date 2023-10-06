@@ -14,7 +14,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# PLaybook to install a base debian system from an arch live installer image. 
+# Playbook to install a base debian system from an arch live installer image. 
 # This allows you to have a live image and truly automate the _entire_ installation.
 # You don't have to deal with any of that GUI install crap debian offers. 
 ---
