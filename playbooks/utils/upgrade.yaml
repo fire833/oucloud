@@ -1,0 +1,9 @@
+---
+
+- name: Upgrade distribution for all nodes
+  hosts: all
+  tasks:
+  - name: Upgrade distribution
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: true
