@@ -1,0 +1,33 @@
+---
+
+- name: Derive System IP address
+  ansible.builtin.shell: echo '{{ ansible_facts['hostname'] }}' | sed -E 's/oucloud-([0-9]+)/\1/' | sed 's/^0*//'
+  register: ip_last_octet
+
+- name: Set IP address statically in interfaces file
+  ansible.builtin.template:
+    src: interfaces/lan.j2
+    dest: /etc/network/interfaces.d/lan
+    mode: '0644'
+    owner: root
+    group: root
+  register: lan
+  
+- name: Set IP address in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ ansible_facts['hostname'] }} 10.0.2.{{ ip_last_octet.stdout }}"
+    state: present
+  register: hosts
+
+- name: Reset /etc/network/interfaces to source our stuff
+  ansible.builtin.template:
+    src: interfaces/main.j2
+    dest: /etc/network/interfaces
+    mode: '0644'
+    owner: root
+    group: root
+  register: interfaces
+
+- name: Reload interfaces
+  ansible.builtin.command: ifreload -a

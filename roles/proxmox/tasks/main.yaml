@@ -8,3 +8,6 @@
 
   - name: Install software
     ansible.builtin.import_tasks: software/software.yaml
+
+  - name: Configure network
+    ansible.builtin.import_tasks: network/network.yaml
