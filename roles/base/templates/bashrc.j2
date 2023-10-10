@@ -2,6 +2,11 @@
 # Set custom prompt for root user only
 PS1='(\[\e[31;1;3m\]root \[\e[0m\]@ \[\e[32m\]\H\[\e[0m\])-(\[\e[38;5;25m\]$(git branch 2>/dev/null | grep '"'"'*'"'"')\[\e[0m\])-(\[\e[38;5;27m\]\w\[\e[0m\]) --> '
 
+alias ll="ls -la"
+alias l="ls"
+
+alias killf="kill -s SIGKILL"
+
 alias g="git"
 alias gc="git commit"
 alias gca="git commit -a"
@@ -54,3 +59,11 @@ alias nmcu="nmcli c up"
 alias nmcd="nmcli c down"
 alias nmcs="nmcli c show"
 alias nmds="nmcli d show"
+
+# Buildah aliases
+alias b="buildah"
+alias bi="buildah images"
+alias brmi="buildah rmi"
+alias brmif="buildah rmi -f"
+alias bpsh="buildah push"
+alias bbd="buildah bud"
