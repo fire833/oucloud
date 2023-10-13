@@ -20,6 +20,12 @@
     state: present
   register: hosts
 
+- name: Remove old hosts line
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ ansible_facts['hostname'] }} 10.0.2.{{ ansible_facts['hostname'] }} | sed -E s/oucloud-([0-9]+)/\\1/ | sed s/^0*//"
+    state: absent
+
 - name: Reset /etc/network/interfaces to source our stuff
   ansible.builtin.template:
     src: interfaces/main.j2
