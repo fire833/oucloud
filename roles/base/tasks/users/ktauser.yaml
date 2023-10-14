@@ -1,0 +1,55 @@
+---
+
+- name: Add ktauser group
+  ansible.builtin.group:
+    name: ktauser
+    state: present
+
+- name: Add ktauser user
+  ansible.builtin.user:
+    name: ktauser
+    group: ktauser
+    # groups: adm,ansible,root
+    state: present
+    comment: "Kendall Tauser"
+    shell: /bin/bash
+
+- name: Add ktauser to sudoers
+  ansible.builtin.template:
+    src: sudoers/ktauser.j2
+    dest: /etc/sudoers.d/ktauser
+    owner: root
+    group: root
+    mode: '0110'
+
+- name: Install SSH Key ktauser
+  ansible.posix.authorized_key:
+    comment: KT SSH Login
+    state: present
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJyGyRO1fXa+786ybRhvbuQ5rMZ50q4O+AvIyhqXp/R5
+    user: ktauser
+
+- name: Install bashrc for ktauser
+  ansible.builtin.template:
+    src: bashrc.j2
+    dest: /home/ktauser/.bashrc
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Install bash_profile for ktauser
+  ansible.builtin.template:
+    src: bash_profile.j2
+    dest: /home/ktauser/.bash_profile
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Install profile for ktauser
+  ansible.builtin.template:
+    src: profile.j2
+    dest: /home/ktauser/.profile
+    mode: '0644'
+    owner: root
+    group: root
+

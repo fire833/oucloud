@@ -3,3 +3,6 @@
 - block:
   - name: Add root user configs
     ansible.builtin.import_tasks: users/root.yaml
+
+  - name: Add ktauser user
+    ansible.builtin.import_tasks: users/ktauser.yaml
