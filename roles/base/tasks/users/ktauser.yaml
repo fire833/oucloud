@@ -33,23 +33,23 @@
   ansible.builtin.template:
     src: bashrc.j2
     dest: /home/ktauser/.bashrc
-    mode: '0644'
-    owner: root
-    group: root
+    mode: '0600'
+    owner: ktauser
+    group: ktauser
 
 - name: Install bash_profile for ktauser
   ansible.builtin.template:
     src: bash_profile.j2
     dest: /home/ktauser/.bash_profile
-    mode: '0644'
-    owner: root
-    group: root
+    mode: '0600'
+    owner: ktauser
+    group: ktauser
 
 - name: Install profile for ktauser
   ansible.builtin.template:
     src: profile.j2
     dest: /home/ktauser/.profile
-    mode: '0644'
-    owner: root
-    group: root
+    mode: '0600'
+    owner: ktauser
+    group: ktauser
 
