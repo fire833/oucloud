@@ -1,0 +1,23 @@
+---
+
+- name: Fix proxmox services so things work
+  hosts: proxmox
+  tasks:
+
+  - name: Restart pvedaemon
+    ansible.builtin.systemd_service:
+      name: pvedaemon.service
+      state: restarted
+      enabled: true
+
+  - name: Restart pveproxy
+    ansible.builtin.systemd_service:
+      name: pveproxy.service
+      state: restarted
+      enabled: true
+
+  - name: Restart pvestatd
+    ansible.builtin.systemd_service:
+      name: pvestatd.service
+      state: restarted
+      enabled: true
