@@ -12,6 +12,15 @@
     owner: root
     group: root
   register: lan
+
+- name: Add bridge interface for local VMs to hook into
+  ansible.builtin.template:
+    src: interfaces/vmbr.j2
+    dest: /etc/network/interfaces.d/vmbr
+    mode: '0644'
+    owner: root
+    group: root
+  register: vmbr
   
 - name: Set IP address in /etc/hosts
   ansible.builtin.lineinfile:

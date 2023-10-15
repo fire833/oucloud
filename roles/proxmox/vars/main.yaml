@@ -1,3 +1,4 @@
 ---
 
 ceph_release: quincy
+gateway_ip: 10.0.2.1

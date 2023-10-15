@@ -1,0 +1,6 @@
+auto vmbr0
+iface vmbr0 inet static
+    address  10.3.{{ ip_last_octet.stdout }}.0/24
+    bridge-ports none
+    bridge-stp off
+    bridge-fd 0

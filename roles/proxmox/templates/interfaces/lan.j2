@@ -2,4 +2,7 @@ auto eno1
 iface eno1 inet static
     address 10.0.2.{{ ip_last_octet.stdout }}
     netmask 255.255.255.0
-    gateway 10.0.2.1
+    gateway {{ gateway_ip }}
+
+    post-up echo 1 > /proc/sys/net/ipv4/ip_forward
+    post-up echo 1 > /proc/sys/net/ipv4/conf/eno1/proxy_arp
