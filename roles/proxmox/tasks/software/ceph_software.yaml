@@ -1,0 +1,46 @@
+# Installing ceph onto proxmox instances
+---
+
+# We currently cannot use the official ceph repos for debian
+# bookworm because of some bug in debian stable:
+# https://docs.ceph.com/en/latest/releases/reef/
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1030129
+# Until this is resolved, we will use the proxmox repos that
+# have builds of ceph quincy for bookworm.
+
+# - name: Add Ceph Repository Key
+#   ansible.builtin.get_url:
+#     url: https://download.ceph.com/keys/release.asc
+#     dest: /etc/apt/trusted.gpg.d/ceph-release-bookworm.asc
+#     mode: '0644'
+#     force: true
+
+# - name: Ensure Ceph Apt Key Exists (or remove if old)
+#   ansible.builtin.file:
+#     path: /etc/apt/trusted.gpg.d/ceph-release-bookworm.asc
+#     state: absent
+
+# - name: Add Ceph Apt Repository
+#   ansible.builtin.apt_repository:
+#     validate_certs: false
+#     repo: deb https://download.ceph.com/debian-{{ ceph_release }} bookworm main
+#     filename: ceph-{{ ceph_release }}
+#     state: absent
+
+- name: Add Ceph Apt Repository
+  ansible.builtin.apt_repository:
+    validate_certs: false
+    repo: deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription
+    filename: ceph
+    state: present
+
+- name: Update apt cache with new repository
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Ceph
+  ansible.builtin.apt:
+    name:
+    - ceph
+    - ceph-mds
+    state: latest

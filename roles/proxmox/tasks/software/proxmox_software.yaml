@@ -20,7 +20,7 @@
     mode: '0644'
     force: true
 
-- name: Add Proxmox apt repository
+- name: Add Proxmox Apt Repository
   ansible.builtin.apt_repository:
     validate_certs: false
     repo: deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription
@@ -30,8 +30,6 @@
 - name: Update apt cache with new repository
   ansible.builtin.apt:
     update_cache: true
-    autoremove: true
-    upgrade: true
 
 - name: Create /boot/pve for proxmox kernels
   ansible.builtin.file:
@@ -73,7 +71,7 @@
   ansible.builtin.apt:
     name:
     - pve-kernel-6.2
-    state: present
+    state: latest
   register: kernel_installed
 
 - name: Reboot after kernel installation
