@@ -1,0 +1,44 @@
+---
+
+- name: Add user account with password
+  hosts: all
+  become: true
+  vars_prompt:
+    - name: user
+      private: false
+      unsafe: false
+      prompt: Provide the user you want to set
+    - name: pw
+      private: true
+      unsafe: false
+      prompt: Provide the password you want set
+    - name: sudoers
+      private: false
+      unsafe: false
+      prompt: Should this user be added to sudoers?
+  tasks:
+
+  - name: Add group
+    ansible.builtin.group:
+      name: "{{ user }}"
+      state: present
+
+  - name: Add user
+    ansible.builtin.user:
+      name: "{{ user }}"
+      comment: "User account"
+      create_home: true
+      shell: /bin/bash
+      group: "{{ user }}"
+      password: "{{ pw }}"
+      state: present
+
+  - name: Add user to sudoers
+    community.general.sudoers:
+      name: "sudoers-{{ user }}"
+      user: "{{ user }}"
+      state: present
+      nopassword: false
+      commands:
+      - "ALL"
+    when: sudoers == "y" or sudoers == "Y"
