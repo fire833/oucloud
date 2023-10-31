@@ -18,27 +18,29 @@
 
 - name: Install Arch on Arm for Zedboard
   hosts: localhost
+  become: true
   connection: local
   vars_prompt:
   - name: drive
     private: false
     unsafe: false
     prompt: Provide the block device you wish to install Arch on Arm onto (please be sure this is the right block device!!)
-    # default: /dev/nvme0n1
+    default: /dev/mmcblk0
   - name: drive_boot_part
     private: false
     unsafe: false
     prompt: Provide the device name for the partition for boot
-    # default: /dev/nvme0n1p1
+    default: /dev/mmcblk0p1
   - name: drive_root_part
     private: false
     unsafe: false
     prompt: Provide the device name for the root partition
-    # default: /dev/nvme0n1p2
+    default: /dev/mmcblk0p2
   - name: rootfs_url
     private: false
     unsafe: false
     prompt: Provide the link to the rootfs you wish to download and unpack
+    default: https://ca.us.mirror.archlinuxarm.org/os/ArchLinuxARM-zedboard-latest.tar.gz
   - name: mount_point
     private: false
     unsafe: false
