@@ -1,0 +1,127 @@
+# Copyright (C) 2023 Kendall Tauser
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+
+- name: Install Arch on Arm for Zedboard
+  hosts: localhost
+  connection: local
+  vars_prompt:
+  - name: drive
+    private: false
+    unsafe: false
+    prompt: Provide the block device you wish to install Arch on Arm onto (please be sure this is the right block device!!)
+    # default: /dev/nvme0n1
+  - name: drive_boot_part
+    private: false
+    unsafe: false
+    prompt: Provide the device name for the partition for boot
+    # default: /dev/nvme0n1p1
+  - name: drive_root_part
+    private: false
+    unsafe: false
+    prompt: Provide the device name for the root partition
+    # default: /dev/nvme0n1p2
+  - name: rootfs_url
+    private: false
+    unsafe: false
+    prompt: Provide the link to the rootfs you wish to download and unpack
+  - name: mount_point
+    private: false
+    unsafe: false
+    prompt: Provide the base mount point for the drive on the system
+    default: /mnt
+  tasks:
+
+  - name: Read device information (always use unit when probing)
+    community.general.parted: device={{ drive }} unit=MiB
+    register: dev_info
+
+  - name: Run wipefs on {{ drive }} device
+    ansible.builtin.command: wipefs -a {{ drive }}
+
+  - name: Boot Partition
+    community.general.parted:
+      device: "{{ drive }}"
+      name: boot
+      number: 1
+      label: gpt
+      state: present
+      align: optimal
+      part_end: 1GB
+      unit: GB
+
+  - name: Root partition
+    community.general.parted:
+      device: "{{ drive }}"
+      name: root
+      number: 2
+      label: gpt
+      state: present
+      part_start: 3GB
+      unit: GB
+
+  - name: Format EFI Partition
+    community.general.filesystem:
+      device: "{{ drive_boot_part }}"
+      fstype: vfat
+      state: present
+
+  - name: Format Root Partition
+    community.general.filesystem:
+      device: "{{ drive_root_part }}"
+      fstype: ext4
+      state: present
+
+  - name: Mount root filesystem on localhost
+    ansible.posix.mount:
+      path: "{{ mount_point }}"
+      src: "{{ drive_root_part }}"
+      fstype: ext4
+      state: mounted
+
+  - name: Make boot directory on drive
+    ansible.builtin.file:
+      path: "{{ mount_point }}/boot"
+      state: directory
+      mode: '0755'
+
+  - name: Mount boot filesystem on localhost
+    ansible.posix.mount:
+      path: "{{ mount_point }}/boot"
+      src: "{{ drive_boot_part }}"
+      fstype: vfat
+      state: mounted
+
+  - name: Download and unpack rootfs
+    ansible.builtin.unarchive:
+      src: "{{ rootfs_url }}"
+      dest: "{{ mount_point }}"
+      remote_src: yes
+
+  - name: Unmount bootfs
+    ansible.posix.mount:
+      path: "{{ mount_point }}/boot"
+      src: "{{ drive_boot_part }}"
+      fstype: vfat
+      state: unmounted
+
+  - name: Unmount rootfs
+    ansible.posix.mount:
+      path: "{{ mount_point }}"
+      src: "{{ drive_root_part }}"
+      fstype: ext4
+      state: unmounted
