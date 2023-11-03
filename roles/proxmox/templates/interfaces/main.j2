@@ -1,3 +1,23 @@
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:
+
+auto lo
+iface lo inet loopback
+
+auto eno1
+iface eno1 inet static
+    address 10.0.2.{{ ip_last_octet.stdout }}
+    netmask 255.255.255.0
+    gateway {{ gateway_ip }}
+
+    post-up echo 1 > /proc/sys/net/ipv4/ip_forward
+    post-up echo 1 > /proc/sys/net/ipv4/conf/eno1/proxy_arp
+
+auto vmbr0
+iface vmbr0 inet static
+    address  10.3.{{ ip_last_octet.stdout }}.0/24
+    bridge-ports none
+    bridge-stp off
+    bridge-fd 0
+
 source /etc/network/interfaces.d/*
