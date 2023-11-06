@@ -1,0 +1,8 @@
+---
+
+- name: Wipe hard drives to make way for ceph
+  hosts: proxmox
+  tasks:
+
+  - name: wipefs things
+    ansible.builtin.command: wipefs -a /dev/sda
