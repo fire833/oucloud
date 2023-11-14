@@ -21,3 +21,10 @@ iface vmbr0 inet static
     bridge-fd 0
 
 source /etc/network/interfaces.d/*
+
+{% if fastnics is defined and fastnics %}
+auto enp3s0f0np0
+iface enp3s0f0np0
+    address 10.0.4.{{ ip_last_octet.stdout }}
+    netmask 255.255.255.0
+{% endif %}
