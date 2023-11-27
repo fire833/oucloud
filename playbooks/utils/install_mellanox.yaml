@@ -11,33 +11,33 @@
       - mstflint
       state: latest
 
-  # - name: Install this prereq crap
-  #   ansible.builtin.apt:
-  #     update_cache: true
-  #     name:
-  #     - gcc 
-  #     - make 
-  #     - dkms 
-  #     # - linux-headers
-  #     # - linux-headers-generic
-  #     state: latest
+  - name: Install this prereq crap
+    ansible.builtin.apt:
+      update_cache: true
+      name:
+      - gcc 
+      - make 
+      - dkms 
+      # - linux-headers
+      # - linux-headers-generic
+      state: latest
 
-  # - name: Download Mellanox packages
-  #   ansible.builtin.get_url:
-  #     url: https://www.mellanox.com/downloads/MFT/mft-4.26.0-93-x86_64-deb.tgz
-  #     dest: /root/mft.tgz
-  #     mode: '0644'
+  - name: Download Mellanox packages
+    ansible.builtin.get_url:
+      url: https://www.mellanox.com/downloads/MFT/mft-4.26.0-93-x86_64-deb.tgz
+      dest: /root/mft.tgz
+      mode: '0644'
 
-  # - name: Add package directory
-  #   ansible.builtin.file:
-  #     path: /root/mft_unpack
-  #     state: directory
+  - name: Add package directory
+    ansible.builtin.file:
+      path: /root/mft_unpack
+      state: directory
 
-  # - name: Unpack Mellanox packages
-  #   ansible.builtin.unarchive:
-  #     remote_src: true
-  #     src: /root/mft.tgz
-  #     dest: /root/mft_unpack
+  - name: Unpack Mellanox packages
+    ansible.builtin.unarchive:
+      remote_src: true
+      src: /root/mft.tgz
+      dest: /root/mft_unpack
 
   - name: Download driver
     ansible.builtin.get_url:
@@ -46,7 +46,7 @@
 
   - name: Add package directory
     ansible.builtin.file:
-      path: /root/mft_unpack
+      path: /root/mft_driver_unpack
       state: directory
 
   - name: Unpack Mellanox packages
