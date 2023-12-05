@@ -3,6 +3,12 @@
 - name: Install mellanox tooling
   hosts: all
   become: true
+  vars_prompt:
+  - name: redownload
+    private: false
+    unsafe: false
+    prompt: Redownload and unpack drivers conditionally (Y|n)
+    default: y
   tasks:
   
   - name: Install mstflint
@@ -22,41 +28,86 @@
       # - linux-headers-generic
       state: latest
 
+  - name: Remove old packages tarball
+    ansible.builtin.file:
+      path: /root/mft.tgz
+      state: absent
+    when: redownload == "y" or redownload == "Y"
+
   - name: Download Mellanox packages
     ansible.builtin.get_url:
       url: https://www.mellanox.com/downloads/MFT/mft-4.26.0-93-x86_64-deb.tgz
       dest: /root/mft.tgz
       mode: '0644'
+    when: redownload == "y" or redownload == "Y"
+
+  - name: Remove package directory
+    ansible.builtin.file:
+      path: /root/mft_unpack
+      state: absent
+    when: redownload == "y" or redownload == "Y"
 
   - name: Add package directory
     ansible.builtin.file:
       path: /root/mft_unpack
       state: directory
+    when: redownload == "y" or redownload == "Y"
 
   - name: Unpack Mellanox packages
     ansible.builtin.unarchive:
       remote_src: true
       src: /root/mft.tgz
       dest: /root/mft_unpack
+    when: redownload == "y" or redownload == "Y"
+
+  - name: Remove old driver tarball
+    ansible.builtin.file:
+      path: /root/mft_driver.tgz
+      state: absent
+    when: redownload == "y" or redownload == "Y"
 
   - name: Download driver
     ansible.builtin.get_url:
       url: https://www.mellanox.com/downloads/ofed/MLNX_EN-23.10-0.5.5.0/mlnx-en-23.10-0.5.5.0-debian12.1-x86_64.tgz
       dest: /root/mft_driver.tgz
+    when: redownload == "y" or redownload == "Y"
+
+  - name: Remove package directory
+    ansible.builtin.file:
+      path: /root/mft_driver_unpack
+      state: absent
+    when: redownload == "y" or redownload == "Y"
 
   - name: Add package directory
     ansible.builtin.file:
       path: /root/mft_driver_unpack
       state: directory
+    when: redownload == "y" or redownload == "Y"
 
   - name: Unpack Mellanox packages
     ansible.builtin.unarchive:
       remote_src: true
       src: /root/mft_driver.tgz
-      dest: /root/mft_unpack
+      dest: /root/mft_driver_unpack
+    when: redownload == "y" or redownload == "Y"
 
-  - name: Install Driver package
-    ansible.builtin.command: echo "y" | ./root/mft_unpack/mlnx-en-23.10-0.5.5.0-debian12.1-x86_64/install --skip-distro-check
+  - name: Install mft package manually
+    ansible.builtin.shell: |
+      cd /root/mft_unpack/mft-4.26.0-93-x86_64-deb/DEBS
+      dpkg -i mft_4.26.0-93_amd64.deb
 
-  - name: install mft/mst packages
-    ansible.builtin.command: echo "y" | ./root/mft_unpack/mft-4.26.0-93-x86_64-deb/install --skip-distro-check
+  # - name: Install mft/mst packages
+  #   ansible.builtin.shell: |
+  #     cd /root/mft_unpack/mft-4.26.0-93-x86_64-deb
+  #     echo "y" | ./install.sh --skip-distro-check
+
+  - name: Install mlnx-en packages manually
+    ansible.builtin.shell: |
+      cd /root/mft_driver_unpack/mlnx-en-23.10-0.5.5.0-debian12.1-x86_64/DEBS
+      dpkg -i mlnx-tools_23.10.0-1.2310055_amd64.deb
+      dpkg -i mlnx-en-dkms_23.10.0.5.5.0.g97aff11-1_all.deb
+
+  # - name: Install Driver package
+  #   ansible.builtin.shell: |
+  #     cd /root/mft_driver_unpack/mlnx-en-23.10-0.5.5.0-debian12.1-x86_64
+  #     echo "y" | ./install --skip-distro-check
