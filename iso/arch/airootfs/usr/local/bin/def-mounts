@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+mount /dev/boot-vg/root-lv /mnt
+mount /dev/nvme0n1p1 /mnt/boot
