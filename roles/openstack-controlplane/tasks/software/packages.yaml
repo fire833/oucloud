@@ -1,0 +1,22 @@
+---
+
+- name: Install software packages
+  ansible.builtin.apt:
+    name:
+    - mysql-server
+    - rabbitmq-server
+    - keystone
+    - keystone-doc
+    - glance
+    - glance-api
+    - glance-common
+    - glance-doc
+    - nova-api 
+    - nova-conductor 
+    - nova-consoleauth
+    - nova-consoleproxy 
+    - nova-scheduler
+    - cinder-api 
+    - cinder-scheduler
+    update_cache: true
+    state: latest

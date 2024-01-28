@@ -1,1 +1,6 @@
 ---
+
+- block:
+  
+  - name: Install software package
+    ansible.builtin.import_tasks: software/packages.yaml
