@@ -1,0 +1,5 @@
+
+name: otack_base
+runtime: go
+description: Provision base infrastructure for an openstack cluster (mysql/rabbit)
+main: ../../cmd/main.go

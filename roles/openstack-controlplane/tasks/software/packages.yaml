@@ -11,12 +11,12 @@
     - glance-api
     - glance-common
     - glance-doc
-    - nova-api 
-    - nova-conductor 
+    - nova-api
+    - nova-conductor
     - nova-consoleauth
-    - nova-consoleproxy 
+    - nova-consoleproxy
     - nova-scheduler
-    - cinder-api 
+    - cinder-api
     - cinder-scheduler
     update_cache: true
     state: latest

@@ -1,0 +1,9 @@
+---
+
+- block:
+  
+  - name: Install Python mysql library
+    ansible.builtin.apt:
+      name:
+      - python-pymysql
+      state: latest

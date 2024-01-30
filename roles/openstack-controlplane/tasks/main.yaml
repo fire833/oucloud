@@ -4,3 +4,5 @@
   
   - name: Install software package
     ansible.builtin.import_tasks: software/packages.yaml
+  - name: Install configuration for control plane
+    ansible.builtin.import_tasks: configs/configs.yaml
