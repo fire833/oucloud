@@ -4,6 +4,8 @@ go 1.21.6
 
 require (
 	github.com/pulumi/pulumi-mysql/sdk/v3 v3.2.1
+	github.com/pulumi/pulumi-rabbitmq/sdk/v3 v3.3.1
+	github.com/pulumi/pulumi-random/sdk/v4 v4.15.1
 	github.com/pulumi/pulumi/sdk/v3 v3.103.1
 )
 
