@@ -1,0 +1,37 @@
+---
+
+# Playbook to configure hpclab-desktop and the additional HDDs with LVM.
+- name: Configure LVM for HDDs
+  hosts: hpclab-desktop
+  become: true
+  tasks:
+  
+  - name: Add PVs/Create VG
+    community.general.lvg:
+      vg: hdds
+      pvs:
+      - /dev/sda
+      - /dev/sdb
+      pesize: 16
+      state: present
+
+  - name: Create bulk-data Logical Volume
+    community.general.lvol:
+      vg: hdds
+      lv: bulk-data
+      size: "90%FREE"
+      force: yes
+      state: present
+
+  - name: Create XFS on bulk-data Logical Volume
+    ansible.builtin.filesystem:
+      dev: /dev/hdds/bulk-data
+      fstype: xfs
+      state: present
+
+  - name: Mount bulk-data LV
+    ansible.builtin.mount:
+      path: /mnt/bulk
+      src: /dev/hdds/bulk-data
+      fstype: xfs
+      state: mounted
