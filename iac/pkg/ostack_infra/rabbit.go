@@ -1,4 +1,4 @@
-package ostack_base
+package ostack_infra
 
 import (
 	"github.com/pulumi/pulumi-rabbitmq/sdk/v3/go/rabbitmq"

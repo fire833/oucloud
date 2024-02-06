@@ -1,4 +1,4 @@
-package ostack_base
+package ostack_infra
 
 import (
 	"errors"
