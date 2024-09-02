@@ -1,0 +1,20 @@
+STRING mount /dev/boot-vg/root-lv /mnt
+ENTER
+DELAY 2000
+STRING mount /dev/nvme0n1p1 /mnt/boot
+ENTER
+LED 231 208 58
+DELAY 2000
+STRING arch-chroot /mnt bash -c "export PATH=$PATH:/usr/sbin && grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB && update-grub"
+ENTER
+LED 30 135 143
+DELAY 2000
+STRING umount /mnt/boot
+ENTER
+DELAY 1000
+STRING umount /mnt
+ENTER
+LED 86 66 135
+DELAY 1000
+STRING reboot
+ENTER
