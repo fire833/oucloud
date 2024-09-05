@@ -2,6 +2,7 @@
 
 - name: Upgrade distribution for all nodes
   hosts: all
+  become: true
   tasks:
   - name: Upgrade distribution
     ansible.builtin.apt:

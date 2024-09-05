@@ -1,0 +1,34 @@
+---
+
+- name: Remove user from systems
+  hosts: all
+  become: true
+  vars_prompt:
+    - name: user
+      private: false
+      unsafe: false
+      prompt: Provide the user you want to set
+  tasks:
+
+  - name: Remove user from sudoers
+    community.general.sudoers:
+      name: "sudoers-{{ user }}"
+      user: "{{ user }}"
+      state: absent
+      nopassword: false
+      commands:
+      - "ALL"
+
+  - name: Remove user
+    ansible.builtin.user:
+      name: "{{ user }}"
+      comment: "User account"
+      create_home: true
+      shell: /bin/bash
+      group: "{{ user }}"
+      state: absent
+
+  - name: Remove group
+    ansible.builtin.group:
+      name: "{{ user }}"
+      state: absent
