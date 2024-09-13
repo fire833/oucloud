@@ -1,0 +1,22 @@
+---
+
+- name: Add user account to group
+  hosts: proxmox
+  become: true
+  vars_prompt:
+    - name: user
+      private: false
+      unsafe: false
+      prompt: Provide the user you want to set
+    - name: group
+      private: false
+      unsafe: false
+      prompt: Provide the group to be added to
+  tasks:
+
+  - name: Add user to group
+    ansible.builtin.user:
+      user: "{{ user }}"
+      append: true
+      groups:
+      - "{{ group }}"
