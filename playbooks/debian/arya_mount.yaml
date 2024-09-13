@@ -1,0 +1,20 @@
+---
+
+- name: Mount root docker stuff
+  hosts: proxmox:!nfs
+  become: true
+  tasks: 
+    
+  - name: Add mount
+    ansible.posix.mount:
+      path: /var/lib/docker
+      opts: ro,sync,noatime
+      src: oucloud-15:/mnt/arya/docker-data
+      fstype: nfs
+      state: mounted
+
+  - name: Restart docker
+    ansible.builtin.systemd:
+      service: docker.service
+      enabled: true
+      state: restarted
