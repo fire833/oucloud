@@ -4,13 +4,32 @@
   hosts: proxmox:!nfs
   become: true
   tasks: 
-    
-  - name: Add mount
+  
+  # - name: Remove old mount
+  #   ansible.posix.mount:
+  #     path: /var/lib/docker
+  #     opts: ro,sync,noatime
+  #     src: oucloud-15:/mnt/arya/docker-data
+  #     fstype: nfs
+  #     boot: true
+  #     state: absent_from_fstab
+
+  - name: Add mount for overlays
     ansible.posix.mount:
-      path: /var/lib/docker
+      path: /var/lib/docker/overlay2
       opts: ro,sync,noatime
-      src: oucloud-15:/mnt/arya/docker-data
+      src: oucloud-15:/mnt/arya/docker-data/overlay2
       fstype: nfs
+      boot: true
+      state: mounted
+
+  - name: Add mount for images
+    ansible.posix.mount:
+      path: /var/lib/docker/image
+      opts: ro,sync,noatime
+      src: oucloud-15:/mnt/arya/docker-data/image
+      fstype: nfs
+      boot: true
       state: mounted
 
   - name: Restart docker
