@@ -1,0 +1,28 @@
+---
+
+- name: Resize a Logical Volume to a specific size
+  hosts: proxmox
+  become: true
+  vars_prompt:
+    - name: volume_group
+      private: false
+      unsafe: false
+      prompt: Provide the VG
+    - name: logical_volume
+      private: false
+      unsafe: false
+      prompt: Provide the LV
+    - name: size
+      private: false
+      unsafe: false
+      prompt: Provide the size for the LV 
+  tasks:
+  
+  - name: Resize LV and underlying FS
+    community.general.lvol:
+      vg: "{{ volume_group }}"
+      lv: "{{ logical_volume }}"
+      size: "{{ size }}"
+      resizefs: true
+      # force: true
+      state: present
