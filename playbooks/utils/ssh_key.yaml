@@ -1,0 +1,26 @@
+---
+
+- name: Install authorized key for user
+  hosts: proxmox
+  become: true
+  vars_prompt:
+    - name: user
+      private: false
+      unsafe: false
+      prompt: Provide the user you want to set
+    - name: ssh_key
+      private: false
+      unsafe: false
+      prompt: Provide the SSH key to assign
+    - name: comment
+      private: false
+      unsafe: false
+      prompt: Provide a comment for this key 
+  tasks:
+
+  - name: Add Key
+    ansible.builtin.authorized_key:
+      key: "{{ ssh_key }}"
+      user: "{{ user }}"
+      comment: "{{ comment }}"
+      state: present
