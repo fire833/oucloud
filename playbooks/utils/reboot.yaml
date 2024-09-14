@@ -1,0 +1,10 @@
+---
+
+- name: Reboot nodes
+  hosts: proxmox
+  become: true
+  tasks:
+
+  - name: Reboot hosts
+    ansible.builtin.reboot:
+      reboot_timeout: 7200
