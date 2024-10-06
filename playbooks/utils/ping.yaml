@@ -3,5 +3,5 @@
 - name: Ping all machines
   hosts: all
   tasks:
-  - name: Shutdown machine
+  - name: Ping machine
     ansible.builtin.ping:
