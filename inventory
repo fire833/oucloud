@@ -22,3 +22,6 @@ oucloud-02 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_f
 
 [nfs]
 oucloud-15 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
+
+[extra]
+hpclab ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
