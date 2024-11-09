@@ -45,15 +45,26 @@
 
 - name: Install Kubernetes APT Repo
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /"
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
     filename: kubernetes
     state: present
+
+- name: Unhold kubelet
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: install
 
 - name: Install kubelet ({{ k8s_version }})
   ansible.builtin.apt:
     name: kubelet={{ k8s_version }}
     update_cache: true
+    allow_downgrades: true
     state: latest
+
+- name: Hold kubelet
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold
 
 - name: Start/Enable Kubelet
   ansible.builtin.systemd_service:
@@ -61,18 +72,19 @@
     enabled: true
     state: restarted
 
+- name: Unhold kubeadm
+  ansible.builtin.dpkg_selections:
+    name: kubeadm
+    selection: install
+
 - name: Install kubeadm ({{ k8s_version }})
   ansible.builtin.apt:
     name: kubeadm={{ k8s_version }}
     update_cache: true
+    allow_downgrades: true
     state: latest
 
 - name: Hold kubeadm
   ansible.builtin.dpkg_selections:
     name: kubeadm
-    selection: hold
-
-- name: Hold kubelet
-  ansible.builtin.dpkg_selections:
-    name: kubelet
     selection: hold

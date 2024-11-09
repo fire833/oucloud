@@ -50,8 +50,8 @@
       kubeadm token create --print-join-command
     register: kubeadm_join
 
-  - name: Export Join Command
-    local_action: ansible.builtin.copy content="{{ kubeadm_join.stdout_lines[0] }}" dest="/tmp/kubeadm_join" mode=0777
+  - name: Pause, login to the master node, get a join command, and save in /tmp/kubeadm_join 
+    ansible.builtin.pause:
 
 - name: Install Worker Nodes
   hosts: proxmox:!controller
