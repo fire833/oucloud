@@ -1,0 +1,47 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+bootstrapTokens:
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 10.0.2.10
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: Always
+  imagePullSerial: true
+  name: {{ ansible_facts['hostname'] }}
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+timeouts:
+  controlPlaneComponentHealthCheck: 5m0s
+  discovery: 5m0s
+  etcdAPICall: 2m0s
+  kubeletHealthCheck: 4m0s
+  kubernetesAPICall: 1m0s
+  tlsBootstrap: 5m0s
+  upgradeManifests: 5m0s
+---
+apiServer: {}
+apiVersion: kubeadm.k8s.io/v1beta4
+caCertificateValidityPeriod: 87600h0m0s
+certificateValidityPeriod: 8760h0m0s
+certificatesDir: /etc/kubernetes/pki
+clusterName: ou-k8s
+controllerManager: {}
+dns: {}
+encryptionAlgorithm: RSA-2048
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+featureGates:
+  PublicKeysECDSA: true
+  RootlessControlPlane: true
+imageRepository: registry.k8s.io
+kind: ClusterConfiguration
+kubernetesVersion: v1.31.2
+networking:
+  dnsDomain: cluster.oucloud.ou.edu
+  podSubnet: 10.0.10.0/16
+  serviceSubnet: 10.0.5.0/16
+proxy: {}
+scheduler: {}

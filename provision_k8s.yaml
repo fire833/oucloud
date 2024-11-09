@@ -1,0 +1,14 @@
+---
+- name: Base Role Provision
+  hosts: proxmox
+  become: true
+  become_user: root
+  roles:
+  - base
+
+- name: Kubernetes Role Provision
+  hosts: proxmox
+  become: true
+  become_user: root
+  roles:
+  - k8s

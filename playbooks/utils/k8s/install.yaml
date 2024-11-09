@@ -1,0 +1,92 @@
+# Copyright (C) 2024 Kendall Tauser
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+
+- name: Install Master Node
+  hosts: controller
+  become: true
+  tasks:
+
+  - name: Leave old clusters
+    ansible.builtin.command: kubeadm reset -f
+
+  - name: Stop Kubelet
+    ansible.builtin.systemd_service:
+      name: kubelet.service
+      enabled: true
+      state: stopped
+
+  - name: Initialize Master Node
+    ansible.builtin.shell: |
+      kubeadm init --config /etc/kubernetes/kubeadm.conf
+    register: kubeadm_init
+
+  - name: Restart Kubelet
+    ansible.builtin.systemd_service:
+      name: kubelet.service
+      enabled: true
+      state: started
+
+  - name: Print Results
+    ansible.builtin.debug:
+      msg: "{{ kubeadm_init.stdout }}"
+
+  - name: Create Join Command
+    ansible.builtin.shell: |
+      kubeadm token create --print-join-command
+    register: kubeadm_join
+
+  - name: Export Join Command
+    local_action: ansible.builtin.copy content="{{ kubeadm_join.stdout_lines[0] }}" dest="/tmp/kubeadm_join" mode=0777
+
+- name: Install Worker Nodes
+  hosts: proxmox:!controller
+  become: true
+  tasks:
+
+  - name: Leave old clusters
+    ansible.builtin.command: kubeadm reset -f
+
+  - name: Copy join command to hosts
+    become: true
+    ansible.builtin.copy:
+      src: /tmp/kubeadm_join
+      dest: /tmp/kubeadm_join
+      mode: '0777'
+
+  - name: Stop Kubelet
+    ansible.builtin.systemd_service:
+      name: kubelet.service
+      enabled: true
+      state: stopped
+
+  - name: Join worker nodes
+    become: true
+    ansible.builtin.command: sh -c /tmp/kubeadm_join
+    register: joined_or_not
+
+  - name: Restart Kubelet
+    ansible.builtin.systemd_service:
+      name: kubelet.service
+      enabled: true
+      state: started
+
+  - name: Remove join command
+    become: true
+    ansible.builtin.file:
+      dest: /tmp/kubeadm_join
+      state: absent

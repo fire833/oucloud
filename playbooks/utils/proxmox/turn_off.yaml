@@ -1,0 +1,35 @@
+---
+
+- name: Turn off proxmox
+  hosts: proxmox
+  become: true
+  tasks:
+
+  - name: Stop proxmox services
+    ansible.builtin.systemd_service:
+      name: "{{ item }}.service"
+      state: stopped
+      enabled: false
+    loop:
+    - pvedaemon
+    - pveproxy
+    - pvestatd
+    - corosync
+    - pvescheduler
+    - pve-cluster
+    - pve-firewall
+    # - pve-guests
+    - pvebanner
+    - postfix
+    - pve-lxc-syscalld
+    - pve-ha-lrm
+    - pve-ha-crm
+    - qmeventd
+    - spiceproxy
+    - watchdog-mux
+    - qmeventd
+    - proxmox-firewall
+    - lxc
+    - lxcfs
+    - lxc-monitord
+    - lxc-net

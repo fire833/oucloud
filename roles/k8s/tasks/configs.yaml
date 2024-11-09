@@ -1,0 +1,33 @@
+---
+- name: Touch Kubernetes Config Directory
+  ansible.builtin.file:
+    dest: /etc/kubernetes
+    mode: '0644'
+    owner: root
+    group: root
+    state: directory
+
+- name: Touch kubelet directory
+  ansible.builtin.file:
+    dest: /var/lib/kubelet
+    mode: '0644'
+    owner: root
+    group: root
+    state: directory
+
+- name: Install kubeadm.conf
+  ansible.builtin.template:
+    src: kubeadm.conf.j2
+    dest: /etc/kubernetes/kubeadm.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Install kubelet.conf
+  ansible.builtin.template:
+    src: kubelet.conf.j2
+    dest: /var/lib/kubelet/config.yaml
+    backup: true
+    mode: '0644'
+    owner: root
+    group: root

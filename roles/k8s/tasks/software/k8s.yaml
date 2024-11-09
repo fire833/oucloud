@@ -1,0 +1,78 @@
+# Copyright (C) 2024 Kendall Tauser
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+- name: Install CRI-O dependencies
+  ansible.builtin.apt:
+    name:
+    - runc
+    - crun
+    # - glibc
+    - fuse-overlayfs
+    - containerd
+    state: latest
+
+- name: Start/Enable Containerd
+  ansible.builtin.systemd_service:
+    name: containerd.service
+    enabled: true
+    state: started
+
+- name: Download Kubernetes GPG key
+  ansible.builtin.get_url:
+    url: https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key
+    dest: /tmp/k8sgpg
+    # curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key|sha512sum
+    checksum: sha512:bb9db64d34e904d497130878ff2eda2a9e07f3565d1e230db9f930ce8b40c37ad8f11f01b99df5ac7e49cf136fdf6c226e1c08038407482acc856a4925044a64 
+
+- name: De-Armor Kubernetes GPG key
+  ansible.builtin.shell:
+    cmd: gpg --dearmor < /tmp/k8sgpg > /etc/apt/trusted.gpg.d/kubernetes.gpg
+    creates: /etc/apt/trusted.gpg.d/kubernetes.gpg
+
+- name: Install Kubernetes APT Repo
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /"
+    filename: kubernetes
+    state: present
+
+- name: Install kubelet ({{ k8s_version }})
+  ansible.builtin.apt:
+    name: kubelet={{ k8s_version }}
+    update_cache: true
+    state: latest
+
+- name: Start/Enable Kubelet
+  ansible.builtin.systemd_service:
+    name: kubelet.service
+    enabled: true
+    state: restarted
+
+- name: Install kubeadm ({{ k8s_version }})
+  ansible.builtin.apt:
+    name: kubeadm={{ k8s_version }}
+    update_cache: true
+    state: latest
+
+- name: Hold kubeadm
+  ansible.builtin.dpkg_selections:
+    name: kubeadm
+    selection: hold
+
+- name: Hold kubelet
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold

@@ -1,0 +1,15 @@
+# Playbook to to apt autoremove all managed nodes with apt as the package manager.
+---
+
+- hosts: proxmox
+  become: true
+  name: Run apt autoremove on all nodes
+  tasks:
+  
+  - name: Update apt cache
+    ansible.builtin.apt:
+      update_cache: yes
+
+  - name: Run apt autoremove of old packages
+    ansible.builtin.apt:
+      autoremove: true
