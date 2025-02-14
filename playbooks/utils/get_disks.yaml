@@ -1,0 +1,9 @@
+
+- name: Gather Disk Information
+  hosts: all
+  become: false
+  gather_facts: yes
+  tasks:
+    - name: Display Disk Information
+      ansible.builtin.debug:
+        var: ansible_facts.devices

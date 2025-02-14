@@ -6,3 +6,5 @@ tmp2
 tmppw.txt
 
 *.iso
+
+.ansible
