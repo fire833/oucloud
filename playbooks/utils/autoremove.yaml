@@ -1,4 +1,4 @@
-# Playbook to to apt autoremove all managed nodes with apt as the package manager.
+# Playbook to apt autoremove all managed nodes with apt as the package manager.
 ---
 
 - hosts: proxmox

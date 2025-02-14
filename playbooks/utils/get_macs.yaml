@@ -1,0 +1,17 @@
+# Playbook to retrieve MAC addresses of hosts
+---
+
+- hosts: all
+  become: false
+  name: Get MAC addresses for interfaces
+  vars_prompt:
+  - name: iface
+    private: false
+    unsafe: false
+    prompt: Specify a iface to retrieve mac for
+    default: eno1
+  tasks:
+
+  - name: 
+    ansible.builtin.debug:
+      msg: "mac: {{ ansible_facts[iface]['macaddress'] }}"
