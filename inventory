@@ -1,21 +1,6 @@
 
 [proxmox]
-oucloud-03 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-04 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-05 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-06 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-07 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-08 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-09 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-10 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-11 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-12 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-13 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-14 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-15 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-16 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-17 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
-oucloud-18 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
+oucloud-[03:18] ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
 
 [controller]
 oucloud-10 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
