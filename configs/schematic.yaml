@@ -1,14 +1,14 @@
 # Schematic for generating correct Talos ISOs.
 # Use with https://factory.talos.dev
 #
-# Original URL : https://factory.talos.dev/?arch=amd64&cmdline=talos.platform%3Dmetal+talos.config%3Dhttp%3A%2F%2F9b2c4da07d7b50819288.tauser.us%2Fmetadata%3Fh%3D%24%7Bhostname%7D%26m%3D%24%7Bmac%7D%26s%3D%24%7Bserial%7D%26u%3D%24%7Buuid%7D&cmdline-set=true&extensions=-&extensions=siderolabs%2Fcrun&platform=metal&target=metal&version=1.9.4
+# Original URL : https://factory.talos.dev/?arch=amd64&board=undefined&cmdline=talos.platform%3Dmetal+talos.config%3Dhttp%3A%2F%2F9b2c4da07d7b50819288.tauser.us%3A8080%2Fmetadata%3Fm%3D%24%7Bmac%7D%26u%3D%24%7Buuid%7D&cmdline-set=true&extensions=-&extensions=siderolabs%2Fcrun&platform=metal&target=metal&version=1.9.4
 #
-# Schematic ID: 85159178e5c8b763c7437a59a3011d00e1fffd6942c96d174ca1aa92f9c7924f
+# Schematic ID: 80010bff9648c56072385016810a874b1eea6de9ddc44ee2401107870f6630ef
 
 customization:
     extraKernelArgs:
         - talos.platform=metal
-        - talos.config=http://9b2c4da07d7b50819288.tauser.us/metadata?h=${hostname}&m=${mac}&s=${serial}&u=${uuid}
+        - talos.config=http://9b2c4da07d7b50819288.tauser.us:8080/metadata?m=${mac}&u=${uuid}
     systemExtensions:
         officialExtensions:
             - siderolabs/crun
