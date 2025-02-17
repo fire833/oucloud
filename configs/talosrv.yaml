@@ -3,13 +3,15 @@ clusters:
   clusterDomain: oucloud.cs.nor.ou.edu
   podSubnet: 10.175.0.0/16
   svcSubnet: 10.176.0.0/16
-  apiUrl: https://k8s.oucloud.cs.nor.ou.edu
+  apiUrl: https://10.0.2.210:6443
   kubeletVersion: v1.32.1
   installerImage: factory.talos.dev/installer/80010bff9648c56072385016810a874b1eea6de9ddc44ee2401107870f6630ef
   installerVersion: v1.9.4
   k8sComponentsVersion: v1.32.1
   etcdImage: gcr.io/etcd-development/etcd
   etcdVersion: v3.5.18
+  dnsServers:
+  - 10.0.2.1
   secretsFile: secrets.yaml
 
   machines:
@@ -17,63 +19,197 @@ clusters:
     mac: 6c:2b:59:f6:7c:ba
     disk: /dev/nvme0n1
     type: controlplane
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.3
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
+      vip:
+        ip: 10.0.2.210
   - name: oucloud-04
     mac: 6c:2b:59:f5:fe:7a
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.4
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-05
     mac: 6c:2b:59:ec:65:27
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.5
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-06
     mac: 6c:2b:59:ec:68:8c
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.6
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-07
     mac: 6c:2b:59:ec:68:b6
     disk: /dev/nvme0n1
     type: controlplane
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses: 
+      - 10.0.2.7
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
+      vip:
+        ip: 10.0.2.210
   - name: oucloud-08
     mac: 6c:2b:59:f5:f8:cf
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.8
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-09
     mac: 6c:2b:59:ec:72:f9
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.9
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-10
     mac: 6c:2b:59:f5:f7:cd
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.10
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-11
     mac: 6c:2b:59:f5:f5:67
     disk: /dev/nvme0n1
     type: controlplane
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.11
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
+      vip:
+        ip: 10.0.2.210
   - name: oucloud-12
     mac: 6c:2b:59:f5:fa:33
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.12
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-13
     mac: 6c:2b:59:ec:71:59
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.13
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-14
     mac: 6c:2b:59:ec:70:ab
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.14
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-15
     mac: 6c:2b:59:f6:79:45
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.15
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-16
     mac: 6c:2b:59:ec:68:03
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.16
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-17
     mac: 6c:2b:59:ec:70:f2
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.17
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
   - name: oucloud-18
     mac: 6c:2b:59:ec:70:b9
     disk: /dev/nvme0n1
     type: worker
+    netDevs:
+    - interface: eno1
+      dhcp: false
+      addresses:
+      - 10.0.2.18
+      routes:
+      - network: 0.0.0.0/0
+        gateway: 10.0.2.1
