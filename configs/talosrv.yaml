@@ -5,6 +5,7 @@ clusters:
   svcSubnet: 10.176.0.0/16
   apiUrl: https://k8s.oucloud.cs.nor.ou.edu
   kubeletVersion: v1.32.1
+  installerImage: factory.talos.dev/installer/80010bff9648c56072385016810a874b1eea6de9ddc44ee2401107870f6630ef
   installerVersion: v1.9.4
   k8sComponentsVersion: v1.32.1
   etcdImage: gcr.io/etcd-development/etcd
@@ -14,65 +15,65 @@ clusters:
   machines:
   - name: oucloud-03
     mac: 6c:2b:59:f6:7c:ba
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: controlplane
   - name: oucloud-04
     mac: 6c:2b:59:f5:fe:7a
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-05
     mac: 6c:2b:59:ec:65:27
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-06
     mac: 6c:2b:59:ec:68:8c
-    device: /dev/nvme0n1
-    type: controlplane
+    disk: /dev/nvme0n1
+    type: worker
   - name: oucloud-07
     mac: 6c:2b:59:ec:68:b6
-    device: /dev/nvme0n1
-    type: worker
+    disk: /dev/nvme0n1
+    type: controlplane
   - name: oucloud-08
     mac: 6c:2b:59:f5:f8:cf
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-09
     mac: 6c:2b:59:ec:72:f9
-    device: /dev/nvme0n1
-    type: controlplane
+    disk: /dev/nvme0n1
+    type: worker
   - name: oucloud-10
     mac: 6c:2b:59:f5:f7:cd
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-11
     mac: 6c:2b:59:f5:f5:67
-    device: /dev/nvme0n1
-    type: worker
+    disk: /dev/nvme0n1
+    type: controlplane
   - name: oucloud-12
     mac: 6c:2b:59:f5:fa:33
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-13
     mac: 6c:2b:59:ec:71:59
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-14
     mac: 6c:2b:59:ec:70:ab
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-15
     mac: 6c:2b:59:f6:79:45
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-16
     mac: 6c:2b:59:ec:68:03
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-17
     mac: 6c:2b:59:ec:70:f2
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
   - name: oucloud-18
     mac: 6c:2b:59:ec:70:b9
-    device: /dev/nvme0n1
+    disk: /dev/nvme0n1
     type: worker
