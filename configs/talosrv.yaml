@@ -214,14 +214,14 @@ clusters:
       - network: 0.0.0.0/0
         gateway: 10.0.2.1
   - name: oucloud-19
-    mac: 6c:2b:59:ec:70:b9 # TODO fix this
+    mac: 6c:2b:59:f6:78:af
     disk: /dev/nvme0n1
     type: worker
     netDevs:
     - interface: eno1
       dhcp: false
       addresses:
-      - 10.0.2.18/24
+      - 10.0.2.19/24
       routes:
       - network: 0.0.0.0/0
         gateway: 10.0.2.1
