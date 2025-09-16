@@ -13,3 +13,6 @@ oucloud-15 ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_f
 
 [extra]
 hpclab ansible_connection=ssh ansible_user=ktauser ansible_ssh_private_key_file=~/.ssh/servers.key
+
+[install]
+10.0.2.1 ansible_connection=ssh ansible_user=root ansible_password=password

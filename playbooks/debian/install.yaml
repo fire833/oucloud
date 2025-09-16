@@ -23,7 +23,7 @@
   ansible.builtin.import_playbook: disks.yaml
 
 - name: Install debian
-  hosts: all
+  hosts: install
   vars_prompt:
   - name: distribution
     private: false
