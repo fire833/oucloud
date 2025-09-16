@@ -68,6 +68,6 @@
 - name: Enable HAProxy
   ansible.builtin.systemd_service:
     name: haproxy.service
-    enabled: true
-    state: restarted
+    enabled: false
+    state: stopped
     daemon_reload: true

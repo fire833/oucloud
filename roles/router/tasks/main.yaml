@@ -7,8 +7,8 @@
     ansible.builtin.import_tasks: software/haproxy.yaml
   - name: Install zerotier
     ansible.builtin.import_tasks: software/zerotier.yaml
-  - name: Install zeronsd
-    ansible.builtin.import_tasks: software/zeronsd.yaml
+  # - name: Install zeronsd
+  #   ansible.builtin.import_tasks: software/zeronsd.yaml
 
   - name: Enable Routing
     ansible.builtin.import_tasks: routing.yaml
