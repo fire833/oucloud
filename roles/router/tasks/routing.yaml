@@ -47,6 +47,12 @@
     group: root
   register: rules_v4
 
+- name: Enable netfilter persistent
+  ansible.builtin.systemd_service:
+    name: netfilter-persistent
+    enabled: true
+    state: started
+
 - name: Update /etc/hosts
   ansible.builtin.template:
     src: hosts.j2
