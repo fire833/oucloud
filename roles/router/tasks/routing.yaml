@@ -16,6 +16,7 @@
     owner: root
     group: root
 
+# https://forum.proxmox.com/threads/intel-nic-e1000e-hardware-unit-hang.106001/
 - name: Set static LAN IP
   ansible.builtin.template:
     src: interfaces/lan.j2

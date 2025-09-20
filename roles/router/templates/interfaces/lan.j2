@@ -4,6 +4,13 @@ iface {{ router_lan_iface }} inet static
     offload-gso off
     offload-gro off
     offload-tso off
+    offload-rx off
+    offload-tx off
+    offload-rxvlan off
+    offload-txvlan off
+    offload-sg off
+    offload-ufo off
+    offload-lro off
 {% endif %}
     address 10.0.2.1
     netmask 255.255.255.0
