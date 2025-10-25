@@ -7,6 +7,8 @@
     ansible.builtin.import_tasks: software/haproxy.yaml
   - name: Install zerotier
     ansible.builtin.import_tasks: software/zerotier.yaml
+  - name: Install tailscale
+    ansible.builtin.import_tasks: software/tailscale.yaml
   # - name: Install zeronsd
   #   ansible.builtin.import_tasks: software/zeronsd.yaml
 
