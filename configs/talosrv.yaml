@@ -4,12 +4,12 @@ clusters:
   podSubnet: 10.175.0.0/16
   svcSubnet: 10.176.0.0/16
   apiUrl: https://10.0.2.210:6443
-  kubeletVersion: v1.32.1
+  kubeletVersion: v1.34.1
   installerImage: factory.talos.dev/installer/80010bff9648c56072385016810a874b1eea6de9ddc44ee2401107870f6630ef
-  installerVersion: v1.9.4
-  k8sComponentsVersion: v1.32.1
+  installerVersion: v1.11.3
+  k8sComponentsVersion: v1.34.1
   etcdImage: gcr.io/etcd-development/etcd
-  etcdVersion: v3.5.18
+  etcdVersion: v3.6.5
   dnsServers:
   - 10.0.2.1
   secretsFile: secrets.yaml
